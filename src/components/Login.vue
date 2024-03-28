@@ -40,8 +40,15 @@ const form = ref({
                     <div class="flex items-center justify-between mb-4">
                     
                         <a href="#"
-                            class="text-xs text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create
+                            class=" text-indigo-500 hover:text-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Create
                             Account</a>
+                    </div>
+                    <div class="flex items-center justify-between mb-4" v-if="authStore.authErrors.message">
+                    
+                        <a href="#"
+                            class=" text-red-700 hover:text-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            {{ authStore.authErrors.message }}
+                        </a>
                     </div>
                     <button onclick="" type="submit" class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">Login</button>
                 </form>

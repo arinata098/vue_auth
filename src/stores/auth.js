@@ -6,9 +6,11 @@ const token = localStorage.getItem('token');
 export const useAuthStore = defineStore("auth" , {
     state: () => ({
         authUser: null,
+        authErrors:[],
     }),
     getters: {
         user: (state) => state.authUser,
+        error: (state) => state.authErrors
     },
     actions: {
         async getUser() {
@@ -25,6 +27,8 @@ export const useAuthStore = defineStore("auth" , {
             }
         },
         async handleLogin(dataForm) {
+            this.authErrors = [];
+            
             try {
                 const response = await axios.post("/api/login", {
                     email: dataForm.email,
@@ -47,8 +51,18 @@ export const useAuthStore = defineStore("auth" , {
                 // Tangani kesalahan jika permintaan gagal, misalnya ketika tidak ada koneksi internet atau server tidak merespons
                 console.error('Error logging in:', error);
                 // Lakukan penanganan kesalahan, seperti menampilkan pesan kesalahan kepada pengguna
+                // if (error.response.status == 401) {
+                    this.authErrors = error.response.data;
+                // }
             }
+        },
+        async handleLogout() {
+            // Menghapus token dari localStorage
+            localStorage.removeItem('token');
+            // Menetapkan authUser ke null
+            this.authUser = null;
         }
+        
 
 
     }

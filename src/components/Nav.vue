@@ -1,6 +1,9 @@
 
 <script setup>
+import { useAuthStore } from "../stores/auth";
 
+
+const authStore = useAuthStore();
 </script>
 <template>
     <div>
@@ -38,8 +41,12 @@
                     <div class="flex space-x-4">
                         <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                         <RouterLink to="/" class="bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium" aria-current="page">Home</RouterLink>
-                        <RouterLink to="/login" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Login</RouterLink>
-                        <RouterLink to="/register" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Register</RouterLink>
+                        <template v-if="!authStore.user">
+                            <RouterLink to="/login" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Login</RouterLink>
+                        </template>
+                        <template v-else>
+                            <button @click="authStore.handleLogout" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</button>
+                        </template>
                     </div>
                     </div>
                 </div>
@@ -52,8 +59,12 @@
                 <div class="space-y-1 px-2 pb-3 pt-2">
                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
                 <RouterLink to="/" class="bg-gray-900 text-white block rounded-md px-3 py-2 text-base font-medium" aria-current="page">Home</RouterLink>
-                <RouterLink to="/login" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Login</RouterLink>
-                <RouterLink to="/register" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Register</RouterLink>
+                <template v-if="!authStore.user">
+                    <RouterLink to="/login" class="text-gray-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">Login</RouterLink>
+                </template>
+                <template v-else>
+                    <button @click="authStore.handleLogout" class="text-gray-300 hover:bg-gray-700 hover:text-white rounded-md px-3 py-2 text-sm font-medium">Logout</button>
+                </template>
                 </div>
             </div>
         </nav>
