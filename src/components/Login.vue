@@ -1,39 +1,16 @@
 <script setup>
-import axios from "axios";
 import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { useAuthStore } from '../stores/auth';
 
-const router = useRouter();
+const authStore = useAuthStore();
+
 const form = ref({
     email: '',
     password: ''
 })
 
-const handleLogin = async () => {
-    try {
-        const response = await axios.post("/api/login", {
-            email: form.value.email,
-            password: form.value.password
-        });
 
-        // Cek jika respons memiliki token
-        if (response.data.token) {
-            // Jika login berhasil, simpan token di localStorage
-            localStorage.setItem('token', response.data.token);
 
-            // Redirect ke halaman utama atau halaman lain yang sesuai
-            router.push('/');
-        } else {
-            // Jika respons tidak memiliki token (login gagal), tampilkan pesan kesalahan atau lakukan penanganan lain sesuai kebutuhan
-            console.error('Login failed:', response.data.message);
-            // Tampilkan pesan kesalahan kepada pengguna atau lakukan penanganan kesalahan lainnya
-        }
-    } catch (error) {
-        // Tangani kesalahan jika permintaan gagal, misalnya ketika tidak ada koneksi internet atau server tidak merespons
-        console.error('Error logging in:', error);
-        // Lakukan penanganan kesalahan, seperti menampilkan pesan kesalahan kepada pengguna
-    }
-}
 
 </script>
 
@@ -42,7 +19,7 @@ const handleLogin = async () => {
         <div class="min-h-screen flex items-center justify-center w-full">
             <div class="bg-white dark:bg-gray-900 shadow-md rounded-lg px-8 py-6 max-w-md">
                 <h1 class="text-2xl font-bold text-center mb-4 dark:text-gray-200">Welcome Back!</h1>
-                <form @submit.prevent="handleLogin">
+                <form @submit.prevent="authStore.handleLogin(form)">
                     <div class="mb-4">
                         <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Email Address</label>
                         <input 
