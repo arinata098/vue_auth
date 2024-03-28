@@ -1,28 +1,21 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
+import { onMounted } from 'vue';
+import { useAuthStore } from '../stores/auth';
 
-const user = ref();
-const token = localStorage.getItem('token');
+const authStore = useAuthStore();
 
 onMounted(async () => {
-    try {
-        const response = await axios.get('/api/user', {
-            headers: {
-                Authorization: `Bearer ${token}`
-            }
-        });
-        console.log(response.data);
-        user.value = response.data; // Simpan data pengguna dalam variabel reaktiv
-    } catch (error) {
-        console.error('Error fetching user data:', error);
-    }
+    await authStore.getUser();
 });
 </script>
 
 <template>
-    <div>
-        <h1>Home</h1>
+    <div v-if="authStore.user">
+        <h1>{{ authStore.user?.name }}</h1>
+        <h1>{{ authStore.user?.email }}</h1>
+    </div>
+    <div v-else>
+        <h1>Belum ada Data user</h1>
     </div>
 </template>
 
